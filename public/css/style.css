@@ -1,0 +1,45 @@
+html, body {height: 100%;}
+#wrap {min-height: 100%; height: auto; margin: 0 auto -60px; padding: 0 0 60px;}
+#footer {height:60px; background-color: #f5f5f5;}
+#wrap > .container {padding-top: 60px;}
+.container .text-muted {margin: 20px 0;}
+code {font-size: 80%;}
+.navbar-nav a > i.glyphicon{margin-right:10px;}
+
+/* setting margin to 0 on table td btn-toolbar */
+td .btn-toolbar{margin:0;}
+td .thumbnail{margin-bottom:0;}
+
+.gmap{height: 100%; min-height: 300px;}
+.gmap img{max-width: none;}
+.gmap label{width: auto; display:inline;}
+
+/* alert definition */
+.alert-pane{height:70px;}
+
+/* Datatable overload */
+table tbody td{vertical-align: middle!important;}
+.tab-content{margin:30px 0;}
+.toolbar > div{margin-top:10px;}
+#nodes-map {margin-top:20px;}
+
+.label-block{display:block;}
+
+/**
+ *  Guest section
+ **/
+.panel-signin{max-width: 400px; margin: 10% auto;}
+.panel-signin .panel-heading{font-weight:bold;}
+.panel-signin .panel-heading span.glyphicon{margin-right:10px;;}
+.panel-signin .form-control{position: relative; font-size: 16px; height: auto; padding: 10px; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;}
+.panel-signin .form-control:focus{z-index: 1;}
+.panel-signin label.checkbox{font-weight: normal;}
+.panel-signin a.btn-link{margin:10px 0;}
+
+input.collapse-top{
+	margin-bottom: -1px; border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+}
+
+input.collapse-bottom{
+	border-top-left-radius: 0; border-top-right-radius: 0;
+}
