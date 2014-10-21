@@ -33,6 +33,10 @@ class Node extends Eloquent {
         return preg_replace('/\s+/', '_', strtolower($this->name));
     }
 
+    public function hash($secret){
+        return crypt($secret, '$1$'.substr(str_shuffle("abcdefghijklmnopqrstuvwxyz0123456789"), 0, 8).'$');
+    }
+
     public function cfg(){
     	if(is_null($this->cfg)) $this->cfg = '{}';
     	return json_decode($this->cfg);
@@ -41,7 +45,7 @@ class Node extends Eloquent {
     public function config(){
         $config['system']['system'][0]['hostname'] = $this->hostname;
         //$config['system']['system'][0]['timezone'] = Kohana::$config->load('timezones.'.$this->network->timezone);
-        //$config['system']['system'][0]['password'] = $this->network->password;
+        $config['system']['system'][0]['password'] = $this->hash($this->network->password);
 
         return $config;
     }

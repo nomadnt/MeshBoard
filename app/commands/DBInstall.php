@@ -37,6 +37,8 @@ class DBInstall extends Command {
 	 */
 	public function fire()
 	{
+		$this->comment("Remember to configure first your app/config/database.php");
+
 		$hostname = Config::get('database.connections.mysql.host');
 		$database = Config::get('database.connections.mysql.database');
 		$username = Config::get('database.connections.mysql.username');
@@ -45,19 +47,26 @@ class DBInstall extends Command {
 		$_username = $this->ask('DB administrator username:');
 		$_password = $this->secret('DB administrator password:');
 
-		$DB = new PDO('mysql:host=localhost', $_username, $_password);
-		// Drop user and database
-		$DB->query("GRANT USAGE ON *.* TO '".$username."'@'".$hostname."'");
-		$DB->query("DROP USER '".$username."'@'".$hostname."'");
-		$DB->query("DROP DATABASE IF EXISTS `".$database."`");
-		// Create user and database
-		$DB->query("CREATE DATABASE IF NOT EXISTS `".$database."`");
-		$DB->query("CREATE USER '".$username."'@'".$hostname."' IDENTIFIED BY '".$password."'");
-		$DB->query("GRANT USAGE ON *.* TO '".$username."'@'".$hostname."' IDENTIFIED BY '".$password."' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;");
-		$DB->query("GRANT ALL PRIVILEGES ON `".$database."`.* TO '".$username."'@'".$hostname."' WITH GRANT OPTION");
 
-		$this->info('Database installation completed');
-		$this->call('migrate', array('--seed' => $this->option('seed')));
+		if($this->confirm('Do you wish to continue? You will lost your data [yes|no]')){
+			$DB = new PDO('mysql:host=localhost', $_username, $_password);
+
+			// Drop user and database
+			$DB->query("GRANT USAGE ON *.* TO '".$username."'@'".$hostname."'");
+			$DB->query("DROP USER '".$username."'@'".$hostname."'");
+			$DB->query("DROP DATABASE IF EXISTS `".$database."`");
+
+			// Create user and database
+			$DB->query("CREATE DATABASE IF NOT EXISTS `".$database."`");
+			$DB->query("CREATE USER '".$username."'@'".$hostname."' IDENTIFIED BY '".$password."'");
+			$DB->query("GRANT USAGE ON *.* TO '".$username."'@'".$hostname."' IDENTIFIED BY '".$password."' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;");
+			$DB->query("GRANT ALL PRIVILEGES ON `".$database."`.* TO '".$username."'@'".$hostname."' WITH GRANT OPTION");
+
+			$this->info('Database installation completed');
+
+			// Call db:seed if required
+			$this->call('migrate', array('--seed' => $this->option('seed')));
+		}
 	}
 
 	/**

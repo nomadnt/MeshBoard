@@ -14,8 +14,12 @@ use Wireless;
 
 class NodeController extends \BaseController {
 
-	public function index(){
-		
+	public function show($mac){
+		$node = Node::where('mac', '=', $mac)->firstOrFail();
+		$data = json_encode(array('config' => $node->config()));
+		return Response::make($data)
+			->header('Content-Type', 'application/json')
+			->header('X-Content-MD5', md5($data));
 	}
 
 	/**
